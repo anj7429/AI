@@ -1,0 +1,30 @@
+% Road facts
+road(faridabad, gurugram, 37).
+road(faridabad, palwal, 32).
+road(faridabad, bahadurgarh, 60).
+road(faridabad, noida, 50).
+road(faridabad, delhi, 34).
+road(faridabad, ghaziabad, 31).
+road(faridabad, sonipat, 71).
+road(gurugram, rohtak, 67).
+road(palwal, alwar, 60).
+road(alwar, koshi, 50).
+road(palwal, jhajjar, 90).
+
+% Symmetric roads (optional if roads are bidirectional)
+road(X, Y, D) :- road(Y, X, D).
+
+% Base case: direct road
+route(T1, T2, D, [T1, T2]) :-
+    road(T1, T2, D).
+
+% Recursive case with visited tracking
+route(T1, T2, D, [T1 | Path]) :-
+    road(T1, X, D1),
+    X \= T2,
+    route(X, T2, D2, Path),
+    \+ member(T1, Path),  % avoid cycles
+    D is D1 + D2.
+
+% Wrapper: froute
+froute(T1, T2, D, Path) :- route(T1, T2, D, Path).
